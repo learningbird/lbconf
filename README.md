@@ -33,7 +33,7 @@ $ lbconf get database
 # {
 #     "host": "localhost,
 #     "port": 3306,
-#     "username": "prod-user",
+#     "username": "prod-user"
 # }
 ```
 
@@ -74,6 +74,6 @@ $ lbconf keys database
 # [
 #     "host",
 #     "port",
-#     "username",
+#     "username"
 # ]
 ```

@@ -18,7 +18,7 @@ class LbConfConsoleCommand extends Command
     protected function configure()
     {
         $this->setName('config')
-            ->addArgument('action', InputArgument::REQUIRED, 'The action to perform. One of: get, set, keys.')
+            ->addArgument('action', InputArgument::REQUIRED, 'The action to perform. One of: get, set, del, keys.')
             ->addArgument('key', InputArgument::OPTIONAL, 'The config key. Sub-keys are separated by dots: e.g. database.connection.port.')
             ->addArgument('value', InputArgument::OPTIONAL, '(Only used with "set" action.) The config value to set.')
             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Force the type of the value. One of: string, number, boolean.');
