@@ -1,0 +1,6 @@
+{
+    "read": [
+        "default.json"
+    ],
+    "write": "override.json"
+}

@@ -1,0 +1,20 @@
+{
+    "debugEnabled": true,
+    "maintenanceMode": true,
+    "subdomain": "test",
+    "profile": "development",
+    "database": {
+        "settings": {
+            "logQueries": false,
+            "syncTestingDbSchema": false
+        }
+    },
+    "services": {
+        "paypal": {
+            "mode": "sandbox"
+        }
+    },
+    "feedback": {
+        "timeWatchedFactor": 0.1
+    }
+}
