@@ -1,0 +1,7 @@
+{
+    "read": [
+        "default.json",
+        "default-${TEST_ENV_VAR}.json"
+    ],
+    "write": "override.json"
+}

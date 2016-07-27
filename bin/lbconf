@@ -1,0 +1,6 @@
+#!/usr/bin/php
+<?php
+require('vendor/autoload.php');
+
+$console = new \LbConf\Console\LbConfApplication();
+$console->run();

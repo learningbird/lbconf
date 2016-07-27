@@ -1,0 +1,24 @@
+{
+    "name": "learningbird/lbconf",
+    "description": "Command line utility for reading and writing JSON configuration files",
+    "require": {
+        "symfony/console": "*",
+        "crazycodr/standard-exceptions": "2.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "LbConf\\": "src/LbConf"
+        }
+    },
+    "bin": ["bin/lbconf"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Darwish",
+            "email": "mike@learningbird.com"
+        }
+    ]
+}
