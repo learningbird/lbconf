@@ -4,7 +4,7 @@ Command line utility for reading and writing JSON configuration files
 ## Installation
 Install using composer:
 ```bash
-composer require learningbird/lbconf
+$ composer require learningbird/lbconf
 ```
 
 ## Setup
@@ -28,7 +28,7 @@ The files in BOTH the `read` and `write` sections are read and merged, and the f
 Retrieve configuration values:
 
 ```bash
-lbconf get database
+$ lbconf get database
 # Outputs:
 # {
 #     "host": "localhost,
@@ -39,27 +39,27 @@ lbconf get database
 
 Traverse objects by passing dot-separated keys:
 ```bash
-lbconf get database.host # Outputs "localhost"
+$ lbconf get database.host # Outputs "localhost"
 ```
 
 ### `set`
 Set configuration values. Values will be written to the file specified by the `write` key in the `.lbconf` meta-configuration file.
 
 ```bash
-lbconf set database.username dev-user
+$ lbconf set database.username dev-user
 ```
 
 Types will be inferred, unless explicitly specified:
 ```bash
-lbconf set database.port 3306 # Value is cast to int
-lbconf set database.port 3306 --type string # Value remains as string
+$ lbconf set database.port 3306 # Value is cast to int
+$ lbconf set database.port 3306 --type string # Value remains as string
 ```
 
 ### `del`
 Delete overriding configuration values:
 
 ```bash
-lbconf del database.username
+$ lbconf del database.username
 ```
 
 Note that the key must exist in the `write` file for the deletion to be permitted. There is no way to delete a key that only exists in the `read` file.
@@ -69,7 +69,7 @@ The only alternative is to set it to null, or some such value.
 Retrieve configuration value keys:
 
 ```bash
-lbconf keys database
+$ lbconf keys database
 # Outputs:
 # [
 #     "host",
