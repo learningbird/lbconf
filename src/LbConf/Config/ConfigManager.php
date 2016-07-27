@@ -1,6 +1,7 @@
 <?php
 namespace LbConf\Config;
 
+use Exceptions\Collection\KeyNotFoundException;
 use Exceptions\Data\FormatException;
 use Exceptions\IO\Filesystem\FileNotFoundException;
 
@@ -16,12 +17,12 @@ class ConfigManager
     protected $configMerger;
 
     /**
-     * @var \stdClass
+     * @var array
      */
     protected $readData;
 
     /**
-     * @var \stdClass
+     * @var array
      */
     protected $writeData;
 
@@ -37,7 +38,7 @@ class ConfigManager
 
     public function loadConfig(string $metaConfigFile)
     {
-        $metaConfig = $this->readConfigFile($metaConfigFile, true);
+        $metaConfig = $this->readConfigFile($metaConfigFile);
 
         if (!isset($metaConfig['write'])) {
             throw new \DomainException('Meta-config must contain "write" key indicating file to write overrides to.');
@@ -61,7 +62,7 @@ class ConfigManager
         $this->readData = [];
 
         foreach ($readFiles as $file) {
-            $data = $this->readConfigFile($file);
+            $data           = $this->readConfigFile($file);
             $this->readData = $this->configMerger->merge($this->readData, $data);
         }
 
@@ -74,7 +75,7 @@ class ConfigManager
         $this->writeConfigFile($this->writeFile, $this->writeData);
     }
 
-    public function getWriteData()
+    public function getWriteData(): array
     {
         return $this->writeData;
     }
@@ -89,7 +90,11 @@ class ConfigManager
         $element = $this->readData;
 
         foreach ($pieces as $piece) {
-            $element = Properties::get($element, $piece);
+            if (!array_key_exists($piece, $element)) {
+                throw new KeyNotFoundException("Could not find property '$piece'");
+            }
+
+            $element =& $element[$piece];
         }
 
         return $element;
@@ -105,14 +110,14 @@ class ConfigManager
         $element =& $this->writeData;
 
         foreach ($pieces as $piece) {
-            if (!Properties::has($element, $piece)) {
-                Properties::set($element, $piece, []);
+            if (!array_key_exists($piece, $element)) {
+                $element[$piece] = [];
             }
 
-            $element =& Properties::get($element, $piece);
+            $element =& $element[$piece];
         }
 
-        Properties::set($element, $lastPiece, $castValue);
+        $element[$lastPiece] = $castValue;
 
         $this->readData = $this->configMerger->merge($this->readData, $this->writeData);
     }
@@ -125,16 +130,24 @@ class ConfigManager
         $element =& $this->writeData;
 
         foreach ($pieces as $piece) {
-            $element =& Properties::get($element, $piece);
+            $element =& $element[$piece];
         }
 
-        Properties::unset($element, $lastPiece);
+        if (!array_key_exists($lastPiece, $element)) {
+            throw new KeyNotFoundException("Could not find property '$lastPiece'");
+        }
+        unset($element[$lastPiece]);
     }
 
-    public function keys(string $key = null)
+    public function keys(string $key = null): array
     {
         $value = $this->get($key);
-        return array_keys((array)$value);
+
+        if (!is_array($value)) {
+            return [];
+        }
+
+        return array_keys($value);
     }
 
     protected function cast($value, string $type = null)
@@ -183,16 +196,20 @@ class ConfigManager
     }
 
     /**
+     * @param string $file
+     *
+     * @return array
+     *
      * @codeCoverageIgnore
      */
-    protected function readConfigFile(string $file, bool $assoc = false)
+    protected function readConfigFile(string $file): array
     {
         if (!is_file($file) || !is_readable($file)) {
             throw new FileNotFoundException("Cannot read JSON file: $file");
         }
 
         $contents = file_get_contents($file);
-        $data     = json_decode($contents, $assoc);
+        $data     = json_decode($contents, true);
 
         if ($data === null) {
             switch (json_last_error()) {
@@ -226,12 +243,12 @@ class ConfigManager
     }
 
     /**
-     * @param string          $file
-     * @param \stdClass|array $data
+     * @param string $file
+     * @param array  $data
      *
      * @codeCoverageIgnore
      */
-    protected function writeConfigFile(string $file, $data)
+    protected function writeConfigFile(string $file, array $data)
     {
         file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT), LOCK_EX);
     }

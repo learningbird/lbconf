@@ -115,7 +115,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
                 ],
             ],
         ];
-        $writeData = (array)$this->configManager->getWriteData();
+        $writeData = $this->configManager->getWriteData();
 
         $this->assertArrayHasKey('subscription', $writeData);
         $this->assertEquals($expected, $writeData['subscription']);
@@ -154,21 +154,26 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         ], $keys);
     }
 
+    public function testKeysScalar()
+    {
+        return $this->assertEquals([], $this->configManager->keys('gradeCoverage.private.min'));
+    }
+
     public function testDelete()
     {
         $this->configManager->delete('feedback.timeWatchedFactor');
 
-        $writeData = (array)$this->configManager->getWriteData();
+        $writeData = $this->configManager->getWriteData();
 
         $this->assertArrayHasKey('feedback', $writeData);
-        $this->assertArrayNotHasKey('timeWatchedFactor', (array)$writeData['feedback']);
+        $this->assertArrayNotHasKey('timeWatchedFactor', $writeData['feedback']);
     }
 
     public function testDeleteTopLevel()
     {
         $this->configManager->delete('feedback');
 
-        $writeData = (array)$this->configManager->getWriteData();
+        $writeData = $this->configManager->getWriteData();
 
         $this->assertArrayNotHasKey('timeWatchedFactor', $writeData);
     }
@@ -183,7 +188,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testStore()
     {
-        $originalData = (array)$this->mockConfigManager->getWriteData();
+        $originalData = $this->mockConfigManager->getWriteData();
 
         $expected = [
             'subscription' => [
@@ -196,7 +201,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->mockConfigManager->set('subscription.plans.annual.price', '99.95');
-        $writeData = (array)$this->mockConfigManager->getWriteData();
+        $writeData = $this->mockConfigManager->getWriteData();
 
         $this->assertEquals($writeData, array_merge($originalData, $expected));
 
@@ -205,7 +210,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->stringContains('override.json'),
                 $this->callback(function ($data) use ($writeData) {
-                    $this->assertEquals($writeData, (array)$data);
+                    $this->assertEquals($writeData, $data);
                     return true;
                 }
                 ));
