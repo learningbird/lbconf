@@ -1,97 +1,97 @@
 {
-	"loggly": {
-		"token": "0837d460-9801-472d-8b1f-e663679eaaac"
-	},
-	"subscription": {
-		"plans" : {
-			"annual" : {
-				"price" : "149.95",
-				"englishName" : "Annual Subscription - $149.95 USD ($12.50 per month)",
-				"subscriptionTypeID" : 3
-			},
-			"monthly" :	{
-				"price" : "19.95",
-				"englishName" : "Monthly Subscription - $19.95 USD",
-				"subscriptionTypeID" : 2
-			}
-		},
-		"licenses" : {
-			"softLimitCoefficient" : 0.9,
-			"defaultSoftLimit" : 4,
-			"defaultHardLimit" : 5
-		}
-	},
-	"feedback": {
-		"timeWatchedFactor": 0.5
-	},
+    "loggly": {
+        "token": "0837d460-9801-472d-8b1f-e663679eaaac"
+    },
+    "subscription": {
+        "plans" : {
+            "annual" : {
+                "price" : "149.95",
+                "englishName" : "Annual Subscription - $149.95 USD ($12.50 per month)",
+                "subscriptionTypeID" : 3
+            },
+            "monthly" : {
+                "price" : "19.95",
+                "englishName" : "Monthly Subscription - $19.95 USD",
+                "subscriptionTypeID" : 2
+            }
+        },
+        "licenses" : {
+            "softLimitCoefficient" : 0.9,
+            "defaultSoftLimit" : 4,
+            "defaultHardLimit" : 5
+        }
+    },
+    "feedback": {
+        "timeWatchedFactor": 0.5
+    },
     "httpOrHttps": "s",
 
-	"mail": {
-		"apikey": "UcYj-j3gFOvbcAh6nKXk3A"
-	},
+    "mail": {
+        "apikey": "UcYj-j3gFOvbcAh6nKXk3A"
+    },
 
-	"s3": {
-		"s3cmdPath" : "s3cmd -c /var/www/.s3cfg"
-	},
+    "s3": {
+        "s3cmdPath" : "s3cmd -c /var/www/.s3cfg"
+    },
 
-	"taxes": {
-		"CA" : {
-			"AB" : { "GST": 5, "total": 5 },
-			"BC" : { "GST": 5, "PST": 7, "total": 12 },
-			"MB" : { "GST": 5, "PST": 8, "total": 13 },
-			"NB" : { "HST": 13, "total": 13 },
-			"NL" : { "HST": 13, "total": 13 },
-			"NT" : { "GST": 5, "total": 5 },
-			"NS" : { "HST": 15, "total": 15 },
-			"NU" : { "GST": 5, "total": 5 },
-			"ON" : { "HST": 13, "total": 13 },
-			"PE" : { "HST": 14, "total": 14 },
-			"QC" : { "GST": 5, "QST": 9.975, "total": 14.975 },
-			"SK" : { "GST": 5, "PST": 5, "total": 10 },
-			"YT" : { "GST": 5, "total": 5 }
-		}
-	},
+    "taxes": {
+        "CA" : {
+            "AB" : { "GST": 5, "total": 5 },
+            "BC" : { "GST": 5, "PST": 7, "total": 12 },
+            "MB" : { "GST": 5, "PST": 8, "total": 13 },
+            "NB" : { "HST": 13, "total": 13 },
+            "NL" : { "HST": 13, "total": 13 },
+            "NT" : { "GST": 5, "total": 5 },
+            "NS" : { "HST": 15, "total": 15 },
+            "NU" : { "GST": 5, "total": 5 },
+            "ON" : { "HST": 13, "total": 13 },
+            "PE" : { "HST": 14, "total": 14 },
+            "QC" : { "GST": 5, "QST": 9.975, "total": 14.975 },
+            "SK" : { "GST": 5, "PST": 5, "total": 10 },
+            "YT" : { "GST": 5, "total": 5 }
+        }
+    },
 
-	"gradeCoverage": {
-		"private" : { "min" : 4, "max" : 12 },
-		"public" : { "min" : 6, "max" : 12 }
-	},
+    "gradeCoverage": {
+        "private" : { "min" : 4, "max" : 12 },
+        "public" : { "min" : 6, "max" : 12 }
+    },
 
-	"raven": {
-		"keys": {
-			"production": "https://650c47393e7543e7a8bcf679eae291b5:3c554d0a7c48447fa24f37f4e41e17f9@app.getsentry.com/52551",
-			"staging": "https://cc2e052b1125412ab96adef8eb317efc:759fad5e8a13404b8b2d0cf89384886a@app.getsentry.com/66138",
-			"development": "https://200ab5e70e0f4f06a48940f529b0f2cf:f9f9fa50ed2a4aad936b616ac913e488@app.getsentry.com/66137"
-		},
-		"log": true
-	},
+    "raven": {
+        "keys": {
+            "production": "https://650c47393e7543e7a8bcf679eae291b5:3c554d0a7c48447fa24f37f4e41e17f9@app.getsentry.com/52551",
+            "staging": "https://cc2e052b1125412ab96adef8eb317efc:759fad5e8a13404b8b2d0cf89384886a@app.getsentry.com/66138",
+            "development": "https://200ab5e70e0f4f06a48940f529b0f2cf:f9f9fa50ed2a4aad936b616ac913e488@app.getsentry.com/66137"
+        },
+        "log": true
+    },
 
-	"uploads": {
-		"validExtensions" : {
-				"pdf"	:	{ "type" : "document", "name" : "PDF File" },
-				"doc"	:	{ "type" : "document", "name" : "Word Document" },
-				"docx"	:	{ "type" : "document", "name" : "Word Document (XML)" },
+    "uploads": {
+        "validExtensions" : {
+                "pdf"   :   { "type" : "document", "name" : "PDF File" },
+                "doc"   :   { "type" : "document", "name" : "Word Document" },
+                "docx"  :   { "type" : "document", "name" : "Word Document (XML)" },
 
-				"ppt"	:	{ "type" : "presentation", "name" : "Powerpoint Document" },
-				"pptx"	:	{ "type" : "presentation", "name" : "Powerpoint Document" },
+                "ppt"   :   { "type" : "presentation", "name" : "Powerpoint Document" },
+                "pptx"  :   { "type" : "presentation", "name" : "Powerpoint Document" },
 
-				"mp3"	:	{ "type" : "audio",    "name" : "MP3 File" },
-				"wav"	:	{ "type" : "audio",    "name" : "Wave File" },
+                "mp3"   :   { "type" : "audio",    "name" : "MP3 File" },
+                "wav"   :   { "type" : "audio",    "name" : "Wave File" },
 
-				"mp4"	:	{ "type" : "video",    "name" : "MP4 Video" },
-				"flv"	:	{ "type" : "video",    "name" : "Flash Video" },
-				"mpg"	:	{ "type" : "video",    "name" : "MPEG Video" },
-				"wmv"	:	{ "type" : "video",    "name" : "Windows Media Video" },
-				"mov"	:	{ "type" : "video",    "name" : "QuickTime Movie" },
-				"avi"	:	{ "type" : "video",    "name" : "Audio Video Interleave" },
-				"webm"	:	{ "type" : "video",    "name" : "WebM" },
+                "mp4"   :   { "type" : "video",    "name" : "MP4 Video" },
+                "flv"   :   { "type" : "video",    "name" : "Flash Video" },
+                "mpg"   :   { "type" : "video",    "name" : "MPEG Video" },
+                "wmv"   :   { "type" : "video",    "name" : "Windows Media Video" },
+                "mov"   :   { "type" : "video",    "name" : "QuickTime Movie" },
+                "avi"   :   { "type" : "video",    "name" : "Audio Video Interleave" },
+                "webm"  :   { "type" : "video",    "name" : "WebM" },
 
-				"jpg"	:	{ "type" : "image",    "name" : "JPEG Image" },
-				"jpeg"	:	{ "type" : "image",    "name" : "JPEG Image" },
-				"gif"	:	{ "type" : "image",    "name" : "GIF Image" },
-				"svg"	:	{ "type" : "image",    "name" : "Scalable Vector Graphic" },
-				"png"	:	{ "type" : "image",    "name" : "Portable Network Graphic" }
-		},
-		"avatarDimensions" : "60x60"
-	}
+                "jpg"   :   { "type" : "image",    "name" : "JPEG Image" },
+                "jpeg"  :   { "type" : "image",    "name" : "JPEG Image" },
+                "gif"   :   { "type" : "image",    "name" : "GIF Image" },
+                "svg"   :   { "type" : "image",    "name" : "Scalable Vector Graphic" },
+                "png"   :   { "type" : "image",    "name" : "Portable Network Graphic" }
+        },
+        "avatarDimensions" : "60x60"
+    }
 }

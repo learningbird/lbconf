@@ -60,6 +60,27 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @expectedException \Exceptions\IO\Filesystem\FileNotFoundException
+     */
+    public function testMetaConfigMissingReadFile()
+    {
+        $config = [
+            'read' => [
+                'missing-file.json',
+            ],
+            'write' => 'file.json',
+        ];
+        file_put_contents('/tmp/.lbconf-bad', json_encode($config, JSON_PRETTY_PRINT), LOCK_EX);
+
+        try {
+            $configManager = new ConfigManager();
+            $configManager->loadConfig('/tmp/.lbconf-bad');
+        } finally {
+            unlink('/tmp/.lbconf-bad');
+        }
+    }
+
     public function testGetDefault()
     {
         $this->assertEquals('149.95', $this->configManager->get('subscription.plans.annual.price'));

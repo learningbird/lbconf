@@ -13,6 +13,10 @@
         </testsuite>
     </testsuites>
 
+    <php>
+        <env name="TEST_ENV_VAR" value="envvar"/>
+    </php>
+
     <filter>
         <whitelist>
             <directory>src/LbConf</directory>

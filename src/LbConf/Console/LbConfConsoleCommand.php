@@ -21,13 +21,16 @@ class LbConfConsoleCommand extends Command
             ->addArgument('action', InputArgument::REQUIRED, 'The action to perform. One of: get, set, del, keys.')
             ->addArgument('key', InputArgument::OPTIONAL, 'The config key. Sub-keys are separated by dots: e.g. database.connection.port.')
             ->addArgument('value', InputArgument::OPTIONAL, '(Only used with "set" action.) The config value to set.')
-            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Force the type of the value. One of: string, number, boolean.');
+            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Force the type of the value. One of: string, number, boolean.')
+            ->addOption('config-file', 'c', InputOption::VALUE_REQUIRED, 'Path to the meta-config file.', './.lbconf');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $metaConfigFile = $input->getOption('config-file');
+
         $configManager = new ConfigManager();
-        $configManager->loadConfig('/var/www/.lbconf');
+        $configManager->loadConfig($metaConfigFile);
 
         $action = $input->getArgument('action');
         $key    = $input->getArgument('key');

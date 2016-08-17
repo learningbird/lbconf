@@ -79,6 +79,8 @@ class ConfigManager
     {
         $metaConfig = $this->readConfigFile($metaConfigFile);
 
+        $metaConfig = $this->interpolateEnv($metaConfig);
+
         if (!isset($metaConfig['write'])) {
             throw new \DomainException('Meta-config must contain "write" key indicating file to write overrides to.');
         }
@@ -92,7 +94,17 @@ class ConfigManager
         chdir(dirname($metaConfigFile));
 
         $writeFile   = realpath($metaConfig['write']);
-        $readFiles   = isset($metaConfig['read']) ? array_map('realpath', $metaConfig['read']) : [];
+        $readFiles   = [];
+
+        if (isset($metaConfig['read'])) {
+            foreach ($metaConfig['read'] as $readFile) {
+                if (!is_file($readFile) || !is_readable($readFile)) {
+                    throw new FileNotFoundException("Cannot read JSON file: $readFile");
+                }
+                $readFiles[] = realpath($readFile);
+            }
+        }
+
         $readFiles[] = $writeFile;
 
         // Switch back to the original working directory
@@ -358,5 +370,40 @@ class ConfigManager
     protected function writeConfigFile(string $file, array $data)
     {
         file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT), LOCK_EX);
+    }
+
+    /**
+     * @param array $data The config data to interpolate
+     *
+     * @return array The data with environment variables replaced
+     */
+    protected function interpolateEnv(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = $this->interpolateEnv($value);
+            } elseif (is_string($value)) {
+                $data[$key] = $this->interpolateEnvString($value);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param string $value The string to interpolate
+     *
+     * @return string The interpolated string
+     */
+    protected function interpolateEnvString(string $value): string
+    {
+        return preg_replace_callback('/\$(\{[A-Z0-9_]+\}|[A-Z0-9_]+)/i', function (array $matches) {
+            $var = $matches[1];
+            if ($var[0] === '{') {
+                $var = substr($var, 1, -1);
+            }
+
+            return (string)getenv($var);
+        }, $value);
     }
 }
