@@ -2,7 +2,7 @@
     "name": "learningbird/lbconf",
     "description": "Command line utility for reading and writing JSON configuration files",
     "require": {
-        "symfony/console": "^3.1",
+        "symfony/console": "*",
         "crazycodr/standard-exceptions": "^2.1"
     },
     "require-dev": {
