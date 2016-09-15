@@ -22,12 +22,24 @@ class LbConfConsoleCommand extends Command
             ->addArgument('key', InputArgument::OPTIONAL, 'The config key. Sub-keys are separated by dots: e.g. database.connection.port.')
             ->addArgument('value', InputArgument::OPTIONAL, '(Only used with "set" action.) The config value to set.')
             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Force the type of the value. One of: string, number, boolean.')
-            ->addOption('config-file', 'c', InputOption::VALUE_REQUIRED, 'Path to the meta-config file.', './.lbconf');
+            ->addOption('config-file', 'c', InputOption::VALUE_REQUIRED, 'Path to the meta-config file. Defaults to the first of: ./.lbconf, ./.lbconf.php');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $metaConfigFile = $input->getOption('config-file');
+
+        if ($metaConfigFile === null) {
+            foreach (['./.lbconf', './.lbconf.php'] as $possibleFile) {
+                if (file_exists($possibleFile)) {
+                    $metaConfigFile = $possibleFile;
+                    break;
+                }
+            }
+            if ($metaConfigFile === null) {
+                throw new \InvalidArgumentException("Cannot file meta-config file. Looked for './.lbconf', './.lbconf.php'.");
+            }
+        }
 
         $configManager = new ConfigManager();
         $configManager->loadConfig($metaConfigFile);

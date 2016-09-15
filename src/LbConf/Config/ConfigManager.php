@@ -77,7 +77,7 @@ class ConfigManager
      */
     public function loadConfig(string $metaConfigFile)
     {
-        $metaConfig = $this->readConfigFile($metaConfigFile);
+        $metaConfig = $this->readMetaConfigFile($metaConfigFile);
 
         $metaConfig = $this->interpolateEnv($metaConfig);
 
@@ -89,26 +89,22 @@ class ConfigManager
             throw new \DomainException('Meta-config "write" key must be a string.');
         }
 
-        // Files are specified relative to the meta-config directory, so switch there to record the file names
-        $cwd = getcwd();
-        chdir(dirname($metaConfigFile));
+        // Files are specified relative to the meta-config directory
+        $basedir = dirname($metaConfigFile);
 
-        $writeFile   = realpath($metaConfig['write']);
+        $writeFile   = "$basedir/{$metaConfig['write']}";
         $readFiles   = [];
 
         if (isset($metaConfig['read'])) {
             foreach ($metaConfig['read'] as $readFile) {
-                if (!is_file($readFile) || !is_readable($readFile)) {
-                    throw new FileNotFoundException("Cannot read JSON file: $readFile");
-                }
-                $readFiles[] = realpath($readFile);
+                $readFiles[] = "$basedir/{$readFile}";
             }
         }
 
-        $readFiles[] = $writeFile;
-
-        // Switch back to the original working directory
-        chdir($cwd);
+        // If the write file already exists, we want to read from it. Otherwise ignore it.
+        if (file_exists($writeFile)) {
+            $readFiles[] = $writeFile;
+        }
 
         $this->readData = [];
 
@@ -118,7 +114,7 @@ class ConfigManager
         }
 
         $this->writeFile = $writeFile;
-        $this->writeData = $this->readConfigFile($writeFile);
+        $this->writeData = file_exists($writeFile) ? $this->readConfigFile($writeFile) : [];
     }
 
     /**
@@ -312,6 +308,29 @@ class ConfigManager
         }
 
         return $value;
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return array
+     *
+     * @codeCoverageIgnore
+     */
+    protected function readMetaConfigFile(string $file): array
+    {
+        if (!is_file($file) || !is_readable($file)) {
+            throw new FileNotFoundException("Cannot read meta-config file: $file");
+        }
+
+        $fileInfo = new \SplFileInfo($file);
+
+        switch ($fileInfo->getExtension()) {
+            case 'php':
+                return require($file);
+            default:
+                return $this->readConfigFile($file);
+        }
     }
 
     /**
