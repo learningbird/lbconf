@@ -16,7 +16,7 @@ class LbConfConsoleCommand extends Command
     const ACTION_KEYS     = 'keys';
     const ACTION_COMPLETE = 'complete';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('config')
             ->addArgument('key', InputArgument::OPTIONAL, 'The config key. Sub-keys are separated by dots: e.g. database.connection.port.')
@@ -30,7 +30,7 @@ class LbConfConsoleCommand extends Command
             ->addOption('config-file', 'c', InputOption::VALUE_REQUIRED, 'Path to the meta-config file. Defaults to the first of: ./.lbconf, ./.lbconf.php');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $metaConfigFile = $input->getOption('config-file');
 
@@ -126,5 +126,7 @@ class LbConfConsoleCommand extends Command
             default:
                 throw new \InvalidArgumentException("Invalid action: $action");
         }
+
+        return 0;
     }
 }
